@@ -18,8 +18,19 @@ pipeline {
     }
 
     stage('Unit Test') {
-      steps {
-        sh './mvnw "-Dtest=**/petclinic/*/*.java" test'
+      parallel {
+        stage('Unit Test') {
+          steps {
+            sh './mvnw "-Dtest=**/petclinic/*/*.java" test'
+          }
+        }
+
+        stage('') {
+          steps {
+            junit '**/target/surefire-reports/'
+          }
+        }
+
       }
     }
 
