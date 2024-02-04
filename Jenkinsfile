@@ -18,20 +18,9 @@ pipeline {
     }
 
     stage('Unit Test') {
-      parallel {
-        stage('Unit Test') {
-          steps {
-            sh './mvnw "-Dtest=**/petclinic/*/*.java" test'
-            junit '**/target/surefire-reports'
-          }
-        }
-
-        stage('error') {
-          steps {
-            junit '**/target/surefire-reports/'
-          }
-        }
-
+      steps {
+        sh './mvnw "-Dtest=**/petclinic/*/*.java" test'
+        junit(testResults: '**/target/surefire-reports/', allowEmptyResults: true)
       }
     }
 
